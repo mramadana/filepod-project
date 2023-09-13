@@ -24,6 +24,7 @@
     margin-bottom: 30px;
     display: block;
   }
+
   .container {
     width: 800px;
     max-width: 100%;
@@ -31,12 +32,12 @@
 </style>
 
 <body>
-  
+
   <div class="container">
     <h1>tashkela editor</h1>
     <form class="file-test">
 
-      <div class="clone-item" >
+      <div class="clone-item">
         <label for="">single</label>
         <input type="file" name="" id="test_2" class="my-pond" />
       </div>
@@ -160,47 +161,91 @@
 
 
       onpreparefile: (fileItem, file) => {
-   
-        
+
+
         setTimeout(() => {
-        
-        // console.log(JSON.parse($('input[type=hidden]')[0].value).data);
-        
-        // console.log(JSON.parse($('.filepond--data input[type=hidden]')[0].value).data);
+
+          // console.log(JSON.parse($('input[type=hidden]')[0].value).data);
+
+          // console.log(JSON.parse($('.filepond--data input[type=hidden]')[0].value).data);
 
 
-        console.log($(".file-test").serialize());
+          console.log($(".file-test").serialize());
 
-      }, 100);
+        }, 100);
       },
     });
 
   </script>
 
-<script>
-  $(document).ready(function () {
+  <script>
+    $(document).ready(function () {
       $('#add-input').click(function () {
-          var newInput = $('<input type="file" name="" class="my-pond" />');
-          $('.my-pond').last().after(newInput);
-          FilePond.create(newInput[0], {
-              allowReplace: true,
-              allowEdit: true,
-          });
-      });
-  });
-</script>
+        var newInput = $('<input type="file" name="" class="my-pond" />');
+        $('.my-pond').last().after(newInput);
+        $(newInput).filepond({
+          /* FilePond properties */
+          allowReorder: true,
+          filePosterMaxHeight: 150,
 
-  
-<script>
-      $(document).on('click', '.ather_trash', function () {
+          /* Image Editor plugin properties */
+          imageEditor: {
+            // used to create the editor, receives editor configuration, should return an editor instance
+            createEditor: openEditor,
+
+            // Required, used for reading the image data
+            imageReader: [createDefaultImageReader],
+
+            // optionally. can leave out when not generating a preview thumbnail and/or output image
+            imageWriter: [
+              createDefaultImageWriter,
+              // optional image writer instructions, this instructs
+              // the image writer to resize the image to match a width of 384 pixels
+              {
+                targetSize: {
+                  width: 200,
+                },
+              },
+            ],
+
+            // used to generate poster images, runs an editor in the background
+            imageProcessor: processImage,
+
+            // Pintura Image Editor properties
+            editorOptions: {
+              // pass the editor default configuration options
+              ...getEditorDefaults(),
+
+              // we want a square crop
+              imageCropAspectRatio: 1,
+            },
+
+
+            // map legacy data objects to new imageState objects, uncomment if you've used FilePond with version 6 of Pintura and are loading old file metadata
+            // legacyDataToImageState: legacyDataToImageState,
+          },
+
+
+          onpreparefile: (fileItem, file) => {
+
+          },
+
+        });
+      });
+    });
+  </script>
+
+
+  <script>
+    $(document).on('click', '.ather_trash', function () {
       var myEm = $(this).attr('data-value');
-      $('tr[data-value = '+myEm+']').remove();
+      $('tr[data-value = ' + myEm + ']').remove();
       $(this).remove()
       console.log($(this).data("value"))
       monthly_installment_fun();
       rest_of_financing_fun();
     })
-</script>
+  </script>
 
 
 
